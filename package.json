@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/elementemerald/nhl-twitter-ts-bot/issues"
   },
-  "homepage": "https://github.com/elementemerald/nhl-twitter-ts-bot#readme"
+  "homepage": "https://github.com/elementemerald/nhl-twitter-ts-bot#readme",
+  "devDependencies": {
+    "@types/node": "^18.11.9",
+    "typescript": "^4.9.3"
+  }
 }
