@@ -1,7 +1,7 @@
-import Rest, { APIResponse } from "./Rest";
+import { NHLRest, APIResponse } from "./Rest";
 
 export const fetchFeed = async (gameId: number) => {
     const id = gameId.toString();
-    const res = await Rest.get(`game/${id}/feed/live`);
+    const res = await NHLRest.get(`game/${id}/feed/live`);
     return res;
 };

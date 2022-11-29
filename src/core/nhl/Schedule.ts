@@ -1,4 +1,4 @@
-import Rest, { ExpandOptions, APIResponse } from "./Rest";
+import { NHLRest, ExpandOptions, APIResponse } from "./Rest";
 
 interface ScheduleMetadata {
     timeStamp: string
@@ -21,7 +21,7 @@ interface ScheduleResponse extends APIResponse {
  * @returns A promise that returns a boolean specifying if there is a game for today.
  */
 export const gameToday = async (teamId: number, date?: Date) => {
-    const res: ScheduleResponse = await Rest.get("schedule", {
+    const res: ScheduleResponse = await NHLRest.get("schedule", {
         teamId,
         expand: [
             ExpandOptions.TEAMS

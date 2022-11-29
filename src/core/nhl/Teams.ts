@@ -1,4 +1,4 @@
-import Rest, { APIResponse } from "./Rest";
+import { NHLRest, APIResponse } from "./Rest";
 
 interface APITeam {
     id: number
@@ -15,6 +15,6 @@ interface AllTeamsResponse extends APIResponse {
  * @returns An array of all NHL teams.
  */
 export const getAll = async () => {
-    const res: AllTeamsResponse = await Rest.get("teams");
+    const res: AllTeamsResponse = await NHLRest.get("teams");
     return res.teams ?? [];
 };

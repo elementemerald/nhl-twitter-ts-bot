@@ -3,6 +3,11 @@ import nodeFetch, { RequestInit } from "node-fetch";
 
 const baseUrl = "https://statsapi.web.nhl.com/api/v1/";
 
+enum CommonEndpoints {
+    SCHEDULE = "schedule",
+    TEAMS = "teams"
+}
+
 export enum ExpandOptions {
     BROADCASTS_ALL = "schedule.broadcasts.all",
     TEAMS = "schedule.teams",
@@ -23,7 +28,7 @@ export interface APIResponse {
     copyright?: string
 }
 
-class Rest {
+export class NHLRest {
     /**
      * Fetches an endpoint from the NHL API.
      * @param endpoint The endpoint to fetch.
@@ -32,7 +37,7 @@ class Rest {
      * @param init Internal request options
      * @returns 
      */
-    static get = async (endpoint: string, options?: EndpointOptions, timeout?: number, init?: RequestInit) : Promise<APIResponse> => {
+    static async get(endpoint: CommonEndpoints | string, options?: EndpointOptions, timeout?: number, init?: RequestInit) : Promise<APIResponse> {
         const params = stringify(options, {
             addQueryPrefix: true,
             filter: (prefix, value) => {
@@ -73,5 +78,3 @@ class Rest {
         });
     };
 };
-
-export default Rest;
