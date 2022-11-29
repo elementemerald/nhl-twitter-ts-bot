@@ -2,6 +2,7 @@ import { config } from "dotenv";
 config();
 
 import { TwitterClient } from "twitter-api-client";
+import { Team } from "./models/Team";
 
 const twitterClient = new TwitterClient({
     apiKey: process.env.APP_ID as string,
@@ -11,9 +12,11 @@ const twitterClient = new TwitterClient({
 });
 
 const run = async () => {
-    const team = process.env.NHL_TEAM || "EDM";
+    const teamShort = process.env.NHL_TEAM || "EDM";
 
     // Start processing
+    const team = await Team.createFromShort(teamShort);
+    console.log(team);
 };
 
 run();

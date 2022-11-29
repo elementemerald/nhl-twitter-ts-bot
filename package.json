@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js"
+    "compiled-start": "node dist/index.js",
+    "start": "tsc && node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -19,10 +20,14 @@
   "homepage": "https://github.com/elementemerald/nhl-twitter-ts-bot#readme",
   "devDependencies": {
     "@types/node": "^18.11.9",
+    "@types/node-fetch": "^2.6.2",
+    "@types/qs": "^6.9.7",
     "dotenv": "^16.0.3",
     "typescript": "^4.9.3"
   },
   "dependencies": {
+    "node-fetch": "^2.6.7",
+    "qs": "^6.11.0",
     "twitter-api-client": "^1.6.1"
   }
 }
