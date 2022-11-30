@@ -11,6 +11,10 @@ export class Team {
         this.short = short;
     }
 
+    public getId() {
+        return this.id;
+    }
+
     static async createFromShort(short: string) {
         return new Promise((
             resolve: (value: Team) => void,

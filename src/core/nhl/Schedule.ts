@@ -4,6 +4,19 @@ interface ScheduleMetadata {
     timeStamp: string
 }
 
+interface ScheduleDate {
+    date: string
+    totalItems: number
+    totalEvents: number
+    totalGames: number
+    totalMatches: number
+    games: Object[]
+}
+
+interface APIGame {
+    // WIP
+}
+
 interface ScheduleResponse extends APIResponse {
     totalItems?: number
     totalEvents?: number
@@ -11,7 +24,7 @@ interface ScheduleResponse extends APIResponse {
     totalMatches?: number
     metaData?: ScheduleMetadata
     wait?: number
-    dates?: Object[]
+    dates?: ScheduleDate[]
 }
 
 /**
@@ -20,7 +33,7 @@ interface ScheduleResponse extends APIResponse {
  * @param date (Optional) The date to check games for.
  * @returns A promise that returns a boolean specifying if there is a game for today.
  */
-export const gameToday = async (teamId: number, date?: Date) => {
+export const gameToday = async (teamId: number, date?: Date) : Promise<[gamesToday: boolean, todaysGames: Object[]]> => {
     const res: ScheduleResponse = await NHLRest.get("schedule", {
         teamId,
         expand: [
@@ -29,5 +42,7 @@ export const gameToday = async (teamId: number, date?: Date) => {
     });
 
     const totalGames = res.totalGames ?? 0;
-    return totalGames > 0;
+    const gamesToday = totalGames > 0;
+    const todaysGames = res.dates?.[0]?.games;
+    return [gamesToday, todaysGames ?? []];
 };

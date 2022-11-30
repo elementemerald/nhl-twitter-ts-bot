@@ -54,7 +54,6 @@ export class NHLRest {
         });
     
         const url = `${baseUrl + endpoint}${params}`;
-        console.log(url);
     
         return new Promise((resolve, reject) => {
             let timedOut = false;

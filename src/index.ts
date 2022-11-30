@@ -2,6 +2,8 @@ import { config } from "dotenv";
 config();
 
 import { TwitterClient } from "twitter-api-client";
+
+import { gameToday } from "./core/nhl/Schedule";
 import { Team } from "./models/Team";
 
 const twitterClient = new TwitterClient({
@@ -16,7 +18,15 @@ const run = async () => {
 
     // Start processing
     const team = await Team.createFromShort(teamShort);
-    console.log(team);
+    if (team) {
+        const teamId = team.getId();
+        const [gamesToday, games] = await gameToday(teamId);
+        if (gamesToday) {
+            console.log("There are games today!");
+            // @ts-ignore
+            console.log(games[0]);
+        }
+    }
 };
 
 run();
