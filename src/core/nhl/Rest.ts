@@ -1,5 +1,9 @@
+import { Logger, LogColor } from "../utils";
 import { stringify } from "qs";
 import nodeFetch, { RequestInit } from "node-fetch";
+
+const restLog = new Logger("Rest/Debug", LogColor.BGMAGENTA);
+const restDebug = Boolean(process.env.DEBUG || false);
 
 const baseUrl = "https://statsapi.web.nhl.com/api/v1/";
 
@@ -18,6 +22,7 @@ export enum ExpandOptions {
 };
 
 interface EndpointOptions {
+    gamePk?: number
     teamId?: number
     startDate?: Date
     endDate?: Date
@@ -54,6 +59,7 @@ export class NHLRest {
         });
     
         const url = `${baseUrl + endpoint}${params}`;
+        if (restDebug) restLog.log(url);
     
         return new Promise((resolve, reject) => {
             let timedOut = false;

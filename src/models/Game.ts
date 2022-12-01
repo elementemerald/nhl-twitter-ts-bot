@@ -1,4 +1,8 @@
-enum GameStateCode {
+import { Schedule, APIGame } from "../core/nhl/Schedule";
+import { GameTeams } from "../core/nhl/Teams";
+import { LiveFeed } from "../core/nhl/LiveFeed";
+
+export enum GameStateCode {
     SCHEDULED = "1",
     PREGAME = "2",
     LIVE = "3",
@@ -10,30 +14,61 @@ enum GameStateCode {
     PPD = "9"
 };
 
-enum GameType {
+export enum GameType {
     PRESEASON = "PR",
     REGULAR = "R",
     PLAYOFFS = "P",
     ALLSTAR = "A"
 };
 
-interface GameState {
-    abstractGameState: string
-    codedGameState: GameStateCode
-}
-
-interface GameInfo {
-    id: number
-    type: GameType
-    season: string
-    dateTime: Date
-    state: GameState
+export interface GameState {
+    abstract: string
+    code: GameStateCode
 };
 
 export class Game {
-    info: GameInfo;
+    id: number = -1;
+    type: GameType = GameType.REGULAR;
+    season: string = "";
+    dateTime: Date = new Date();
+    state: GameState = { abstract: "", code: GameStateCode.CONCLUDED };
+    teams?: GameTeams;
+    
+    /** @internal */
+    _rawInfo?: Object;
 
-    constructor(info: GameInfo) {
-        this.info = info;
+    private _update(rawInfo: APIGame) {
+        // Map API game to class
+        this.id = rawInfo.gamePk;
+        this.type = rawInfo.gameType as GameType;
+        this.season = rawInfo.season;
+        this.dateTime = new Date(rawInfo.gameDate);
+        this.state = {
+            abstract: rawInfo.status.abstractGameState,
+            code: rawInfo.status.codedGameState as GameStateCode
+        };
+        this.teams = rawInfo.teams as GameTeams;
+
+        // Hide the raw info when logged out to prevent confusion
+        Object.defineProperty(this, "_rawInfo", {
+            enumerable: false,
+            value: rawInfo
+        });
+    }
+
+    constructor(rawInfo: APIGame) {
+        this._update(rawInfo);
+    }
+
+    public async getFeed() {
+        const res = await LiveFeed.fetch(this.id);
+        return res;
+    }
+
+    public async refresh() {
+        const game = await Schedule.fetchGame(this.id);
+        if (game) {
+            this._update(game);
+        }
     }
 };
