@@ -7,7 +7,7 @@ const restDebug = Boolean(process.env.DEBUG || false);
 
 const baseUrl = "https://statsapi.web.nhl.com/api/v1/";
 
-enum CommonEndpoints {
+export enum CommonEndpoints {
     SCHEDULE = "schedule",
     TEAMS = "teams"
 }
@@ -21,7 +21,7 @@ export enum ExpandOptions {
     EPG = "schedule.game.content.media.epg"
 };
 
-interface EndpointOptions {
+export interface EndpointOptions {
     gamePk?: number
     teamId?: number
     startDate?: Date
