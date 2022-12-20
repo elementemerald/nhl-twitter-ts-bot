@@ -10,3 +10,6 @@ npm i
 npm run build
 npm run start
 ```
+
+## Demo
+Take a look at the demo bot: [@OilersBot](https://twitter.com/OilersBot)
